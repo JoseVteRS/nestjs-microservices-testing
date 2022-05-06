@@ -1,6 +1,8 @@
 {
   "version": 2,
   "projects": {
-    "backend-books": "apps/backend-books"
+    "backend-books": "apps/backend-books",
+    "backend-gateway": "apps/backend-gateway",
+    "backend-users": "apps/backend-users"
   }
 }

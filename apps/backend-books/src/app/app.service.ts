@@ -1,8 +1,19 @@
 import { Injectable } from '@nestjs/common';
 
+const BOOKS = [
+  {
+    id: 1,
+    title: 'Títilo del libro',
+  },
+  {
+    id: 2,
+    title: 'Títilo del libro 2',
+  },
+];
+
 @Injectable()
 export class AppService {
-  getData(): { message: string } {
-    return { message: 'Welcome to backend-books!' };
+  async getAllBooks() {
+    return BOOKS;
   }
 }

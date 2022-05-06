@@ -1,13 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
-
+import { Controller } from '@nestjs/common';
+import { EventPattern } from '@nestjs/microservices';
+import { BookUseCases } from '../../../../libs/contants/use-cases/book.usecase.enum';
 import { AppService } from './app.service';
-
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly bookService: AppService) {}
 
-  @Get()
-  getData() {
-    return this.appService.getData();
+  @EventPattern({ cmd: BookUseCases.GET_ALL_BOOKS })
+  getAllBooks() {
+    return this.bookService.getAllBooks();
   }
 }

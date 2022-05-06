@@ -5,18 +5,45 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AppModule } from './app/app.module';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3333;
-  await app.listen(port);
-  Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
-  );
+const logger = new Logger();
+
+function loggerInit() {
+  return logger.log('Microservice BOOKS is listening', 'BOOKS');
 }
 
+async function bootstrap() {
+  // const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+  //   AppModule,
+  //   {
+  //     transport: Transport.RMQ,
+  //     options: {
+  //       urls: ['amqp://root:admin@127.0.0.1:5672'],
+  //       queue: 'BOOKS_QUEUE',
+  //       queueOptions: {
+  //         durable: false,
+  //       },
+  //     },
+  //   }
+  // );
+  // app.listen();
+  // loggerInit();
+
+  const app = await NestFactory.create(AppModule);
+  await app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: ['amqp://root:admin@127.0.0.1:5672'],
+      queue: 'BOOKS_QUEUE',
+      queueOptions: {
+        durable: false,
+      },
+    },
+  });
+
+  app.startAllMicroservices();
+  loggerInit();
+}
 bootstrap();

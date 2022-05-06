@@ -1,0 +1,5 @@
+export enum BookUseCases {
+  GET_ALL_BOOKS = 'GET_ALL_BOOKS',
+  GET_BOOK_BY_ID = 'GET_BOOK_BY_ID',
+  GET_BOOK_BY_SLUG = 'GET_BOOK_BY_SLUG',
+}
